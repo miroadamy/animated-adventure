@@ -22,13 +22,19 @@ VPC will contain (for each AZ) a public subnet (load balancer, NAT gateway for o
 
 ## Security
 
-The architecture is using Security Groups (optionally also Network ACLs) to restrict access. The SG for the ALB allows access from internet on HTTPS port only and forwards traffic to pods using Ingress controller. 
+The architecture is using Security Groups (optionally also Network ACLs) to restrict access. 
+
+All traffic from the internet if coming through Cloudfront (the DNS is configured to Cloudfront distribution).
+
+The SG for the ALB only allows access from Cloudfront using Origin Access Control (OAC) and forwards traffic to pods using Ingress controller.
 
 There is a separate SG that will be assigned to pods and will allow ingress access only from the ALB SG (plus the internal EKS security group allowing the management layer access of course). 
 
 The third SG assigned to the RDS, will allow access ONLY from the Pods SG, restricted on the database port. 
 
 This way the access to database will be limited to backend pods only.
+
+Optionally (adds aditional complexity) we could deploy network policies inside EKS cluster to limit the access between pods and services.
 
 Architecture recommends using AWS WAF to protect against common web threats (if needed) and Cloudfront to cache static resources.
 NOTE: There may be cost implications for WAF, depending on the traffic and number of rules. The AWS Shield (DDoS protection) Basic is
