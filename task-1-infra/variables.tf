@@ -21,7 +21,7 @@ variable "aws_account_id" {
 variable "aws_region" {
   description = "Cloud Location (region)"
   type        = string
-  default = "eu-central-2"
+  default = "eu-west-1"
 }
 
 variable "cluster_version" {
@@ -38,6 +38,12 @@ variable "private_subnet_ids" {
   description = "List of private subnet IDs for the cluster"
   type        = list(string)
 }
+
+variable "public_subnet_ids" {
+  description = "List of private subnet IDs for the cluster"
+  type        = list(string)
+}
+
 
 variable "tags" {
   description = "A map of tags to add to all resources"
