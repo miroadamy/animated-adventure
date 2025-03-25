@@ -20,6 +20,7 @@ terraform {
     }
   }
 
+  # Use this for real deployment, I am testing with local state
   # backend "s3" {
   #   bucket         = "ACCOUNT-REGION-PROJECT-tfstate"
   #   encrypt        = true
