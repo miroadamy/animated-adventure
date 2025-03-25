@@ -1,4 +1,10 @@
 
+variable "region" {
+  description = "AWS region to deploy resources"
+  type        = string
+  default     = "eu-west-1"
+}
+
 variable "environment" {
   description = "Environment name: [dev, stg, prd]"
   type        = string
@@ -49,6 +55,53 @@ variable "tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
   default     = {}
+}
+
+variable "default_tags" {
+  description = "Default tags to apply to all resources"
+  type        = map(string)
+  default = {
+    Environment = "demo"
+    Project     = "eks-karpenter-example"
+    Terraform   = "true"
+  }
+}
+
+variable "eks" {
+  description = "EKS cluster configuration"
+  type = object({
+    cluster_name                         = string
+    cluster_version                      = string
+    cluster_endpoint_public_access       = bool
+    cluster_endpoint_public_access_cidrs = list(string)
+    managed_node_groups                  = map(any)
+    managed_node_group_defaults          = any
+  })
+  default = {
+    cluster_name                         = "eks-karpenter-demo"
+    cluster_version                      = "1.30"
+    cluster_endpoint_public_access       = true
+    cluster_endpoint_public_access_cidrs = ["0.0.0.0/0"]
+    managed_node_groups = {
+      system = {
+        name           = "eks-system"
+        instance_types = ["t4g.small"]
+        ami_type       = "AL2_ARM_64"
+        min_size       = 1
+        max_size       = 3
+        desired_size   = 2
+        capacity_type  = "ON_DEMAND"
+        lifecycle = {
+          create_before_destroy = true
+        }
+      }
+    }
+    managed_node_group_defaults = {
+      ami_type       = "AL2_ARM_64"
+      instance_types = ["t4g.small"]
+      disk_size      = 20
+    }
+  }
 }
 
 variable "node_instance_types" {
