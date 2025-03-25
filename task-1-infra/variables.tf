@@ -30,10 +30,6 @@ variable "aws_region" {
   default = "eu-west-1"
 }
 
-variable "cluster_version" {
-  description = "Kubernetes version to use for the EKS cluster"
-  type        = string
-}
 
 variable "vpc_id" {
   description = "ID of the VPC where the cluster will be created"
@@ -79,7 +75,7 @@ variable "eks" {
   })
   default = {
     cluster_name                         = "eks-karpenter-demo"
-    cluster_version                      = "1.30"
+    cluster_version                      = "1.32"
     cluster_endpoint_public_access       = true
     cluster_endpoint_public_access_cidrs = ["0.0.0.0/0"]
     managed_node_groups = {
