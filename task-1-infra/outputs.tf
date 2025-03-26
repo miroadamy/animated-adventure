@@ -24,20 +24,20 @@ output "node_security_group_id" {
   value       = module.eks.node_security_group_id
 }
 
-# output "karpenter_irsa_arn" {
-#   description = "IAM role ARN for Karpenter service account"
-#   value       = module.karpenter.iam_role_arn
-# }
+output "karpenter_irsa_arn" {
+  description = "IAM role ARN for Karpenter service account"
+  value       = module.karpenter.iam_role_arn
+}
 
-# output "karpenter_instance_profile_name" {
-#   description = "Instance profile name for Karpenter nodes"
-#   value       = module.karpenter.instance_profile_name
-# }
+output "karpenter_instance_profile_name" {
+  description = "Instance profile name for Karpenter nodes"
+  value       = module.karpenter.instance_profile_name
+}
 
-# output "karpenter_queue_name" {
-#   description = "SQS queue name for Karpenter node interruption handling"
-#   value       = module.karpenter.queue_name
-# }
+output "karpenter_queue_name" {
+  description = "SQS queue name for Karpenter node interruption handling"
+  value       = module.karpenter.queue_name
+}
 
 output "region" {
   description = "AWS region"
@@ -54,10 +54,10 @@ output "private_subnet_ids" {
   value       = var.private_subnet_ids
 }
 
-# output "subnet_discovery_enabled" {
-#   description = "Whether subnet discovery is enabled"
-#   value       = var.karpenter.use_subnet_discovery ? "Using subnet discovery with karpenter.sh/discovery tag" : "Using explicit subnet IDs"
-# }
+output "subnet_discovery_enabled" {
+  description = "Whether subnet discovery is enabled"
+  value       = var.karpenter.use_subnet_discovery ? "Using subnet discovery with karpenter.sh/discovery tag" : "Using explicit subnet IDs"
+}
 
 output "public_subnet_ids" {
   description = "Public subnet IDs used for the EKS cluster"
@@ -69,19 +69,19 @@ output "configure_kubectl" {
   value       = "aws eks update-kubeconfig --region ${var.region} --name ${module.eks.cluster_name}"
 }
 
-# output "karpenter_version" {
-#   description = "Installed Karpenter version"
-#   value       = var.karpenter.version
-# }
+output "karpenter_version" {
+  description = "Installed Karpenter version"
+  value       = var.karpenter.version
+}
 
-# output "karpenter_commands" {
-#   description = "Karpenter commands"
-#   value = {
-#     view_nodepools                         = "kubectl get nodepools"
-#     view_ec2nodeclasses                    = "kubectl get ec2nodeclasses"
-#     view_nodes                             = "kubectl get nodes -L kubernetes.io/arch,karpenter.sh/capacity-type"
-#     view_karpenter_logs                    = "kubectl logs -f -n karpenter -l app.kubernetes.io/name=karpenter -c controller"
-#     example_deployment_apply_x86_example   = "kubectl apply -f examples/architecture/nginx-x86.yaml"
-#     example_deployment_apply_arm64_example = "kubectl apply -f examples/architecture/nginx-arm64.yaml"
-#   }
-# }
+output "karpenter_commands" {
+  description = "Karpenter commands"
+  value = {
+    view_nodepools                         = "kubectl get nodepools"
+    view_ec2nodeclasses                    = "kubectl get ec2nodeclasses"
+    view_nodes                             = "kubectl get nodes -L kubernetes.io/arch,karpenter.sh/capacity-type"
+    view_karpenter_logs                    = "kubectl logs -f -n karpenter -l app.kubernetes.io/name=karpenter -c controller"
+    example_deployment_apply_x86_example   = "kubectl apply -f examples/architecture/nginx-x86.yaml"
+    example_deployment_apply_arm64_example = "kubectl apply -f examples/architecture/nginx-arm64.yaml"
+  }
+}

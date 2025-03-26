@@ -132,3 +132,81 @@ variable "karpenter_chart_version" {
   description = "Which version of the Karpenter Helm chart to install"
   default     = "1.2.1"
 }
+
+variable "karpenter" {
+  description = "Karpenter configuration"
+  type = object({
+    version                      = string
+    use_subnet_discovery         = bool
+    use_security_group_discovery = bool
+    node_pools                   = map(any)
+    ami_family                   = string
+    ami_selector_terms_alias     = string
+  })
+  default = {
+    version                      = "v1.3.1"
+    ami_family                   = "AL2023"
+    ami_selector_terms_alias     = "al2023@latest"
+    use_subnet_discovery         = true
+    use_security_group_discovery = true
+    node_pools = {
+      x86 = {
+        name = "default-x86"
+        instance_types = [
+          "t3.small", "t3a.small",
+          "t3.medium", "t3a.medium"
+          # x86 instances
+          # ,"m5.medium", "m5.large", "m5.xlarge",
+          # "c5.medium", "c5.large", "c5.xlarge",
+          # "r5.medium", "r5.large", "r5.xlarge",
+          # # Latest x86 instances
+          # "m6i.medium", "m6i.large", "m6i.xlarge",
+          # "c6i.medium", "c6i.large", "c6i.xlarge",
+          # "r6i.medium", "r6i.large", "r6i.xlarge"
+        ]
+        capacity_types            = ["on-demand"] #["spot", "on-demand"]
+        architecture              = "amd64"
+        os                        = "linux"
+        ttl_seconds_after_empty   = 30
+        ttl_seconds_until_expired = 2592000
+        labels = {
+          "kubernetes.io/arch"         = "amd64"
+          "node-type"                  = "x86"
+          "karpenter.sh/capacity-type" = "on-demand"
+          "nodeManager"                = "karpenter"
+        }
+      },
+      arm = {
+        name = "default-arm"
+        instance_types = [
+          "t4g.small", "t4g.medium"
+          # Graviton2 instances
+          # SAVE MONEY - disabled for testing
+          # ,"m6g.medium", "m6g.large", "m6g.xlarge",
+          # "c6g.medium", "c6g.large", "c6g.xlarge",
+          # "r6g.medium", "r6g.large", "r6g.xlarge",
+          # # Graviton3 instances
+          # "m7g.medium", "m7g.large", "m7g.xlarge",
+          # "c7g.medium", "c7g.large", "c7g.xlarge",
+          # "r7g.medium", "r7g.large", "r7g.xlarge",
+          # # Graviton4 instances
+          # "m8g.medium", "m8g.large", "m8g.xlarge",
+          # "c8g.medium", "c8g.large", "c8g.xlarge",
+          # "r8g.medium", "r8g.large", "r8g.xlarge",
+          # "x8g.medium", "x8g.large", "x8g.xlarge"
+        ]
+        capacity_types            = ["on-demand"] # ["spot", "on-demand"]
+        architecture              = "arm64"
+        os                        = "linux"
+        ttl_seconds_after_empty   = 30
+        ttl_seconds_until_expired = 2592000
+        labels = {
+          "kubernetes.io/arch"         = "arm64"
+          "node-type"                  = "arm"
+          "karpenter.sh/capacity-type" = "on-demand"  # "spot"
+          "nodeManager"                = "karpenter"
+        }
+      }
+    }
+  }
+}
