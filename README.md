@@ -14,7 +14,9 @@ Good luck!
 
 ## Solutions and instructions
 
-Task 1 - see `./task-1-infra`
+Task 1 - see `./task-1-infra/README.md`
 
-Task 2 - see `./task-2-architecture`
+Task 2 - see `./task-2-architecture/README.md`
+
+
 
