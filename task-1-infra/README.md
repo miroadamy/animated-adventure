@@ -6,6 +6,26 @@ This Terraform project deploys an Amazon EKS cluster with Karpenter for node aut
 
 It allows creation of 3 environments - dev, stg, prd, according the variable values in `./env/dev.tfvars` etc
 
+## Pre-requisites
+
+The project assumes existing VPC, properly setup with both public (IGW connected) and private subnets as well as NAT Gateway deployed to reach the internet.
+
+The ID of VPC and the subnets are parameters to the script - please see the `./env/dev.tfvars` as an example.
+
+There is a Terraform code provided to set up such VPC (that was used in testing the code) in the `./test-support/` folder.
+
+To create it:
+
+```
+cd ./test-support
+terraform init
+terraform apply
+```
+
+The test script uses local state intentionaly. After testing is finished and EKS cluster removed, please make sure you
+remove the VPC so that provisioned NAT gateway does not incur unnecessary costs: `terraform destroy`
+
+
 ## Quick Start
 
 
@@ -17,9 +37,9 @@ export AWS_PROFILE=your-profile
 # export AWS_SECRET_ACCESS_KEY=your-secret-key
 
 # Modify the VPC and subnets in each environment
-# env/dev.tfvars
+# vi env/dev.tfvars
 
-# init, plan and apply
+# init, plan and apply - per environment
 terraform init
 terraform plan -var-file=./env/dev.tfvars
 terraform apply -var-file=./env/dev.tfvars
@@ -169,20 +189,6 @@ The script will:
 
 ### Testing Karpenter Provisioning
 
-Helper script to test Karpenter's node provisioning capabilities:
-
-```bash
-# Run the test script
-./scripts/test-karpenter.sh
-```
-
-The script will:
-1. Deploy test workloads for x86, ARM, and Spot instances
-2. Monitor node provisioning
-3. Show Karpenter events and deployment status
-4. Provide cleanup commands
-
-### Applying Example Deployments
 
 ```bash
 # Apply a specific example
@@ -196,16 +202,7 @@ kubectl apply -f examples/architecture/
 kubectl apply -f examples/
 ```
 
-### Running on x86/AMD64, ARM64/Graviton, Spot Instances
 
-The `examples/` directory contains organized sample deployments for various use cases:
-
-- **[Architecture-specific deployments](examples/architecture/)** - Run workloads on x86/AMD64 or ARM64/Graviton
-- **[Spot instance deployments](examples/spot/)** - Run workloads on cost-effective Spot instances
-- **[Specialized workloads](examples/specialized/)** - Deploy compute-optimized, memory-intensive, or workloads with tolerations
-- **[High availability configurations](examples/high-availability/)** - PodDisruptionBudgets for ensuring availability
-
-Each directory contains detailed README files with usage instructions and explanations.
 
 ## CleanUp
 

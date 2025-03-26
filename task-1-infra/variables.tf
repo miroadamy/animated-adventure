@@ -164,7 +164,7 @@ variable "karpenter" {
           # "c6i.medium", "c6i.large", "c6i.xlarge",
           # "r6i.medium", "r6i.large", "r6i.xlarge"
         ]
-        capacity_types            = ["on-demand"] #["spot", "on-demand"]
+        capacity_types            = ["spot", "on-demand"]
         architecture              = "amd64"
         os                        = "linux"
         ttl_seconds_after_empty   = 30
@@ -172,7 +172,7 @@ variable "karpenter" {
         labels = {
           "kubernetes.io/arch"         = "amd64"
           "node-type"                  = "x86"
-          "karpenter.sh/capacity-type" = "on-demand"
+          "karpenter.sh/capacity-type" = "spot"
           "nodeManager"                = "karpenter"
         }
       },
@@ -195,7 +195,7 @@ variable "karpenter" {
           # "r8g.medium", "r8g.large", "r8g.xlarge",
           # "x8g.medium", "x8g.large", "x8g.xlarge"
         ]
-        capacity_types            = ["on-demand"] # ["spot", "on-demand"]
+        capacity_types            = ["spot", "on-demand"]
         architecture              = "arm64"
         os                        = "linux"
         ttl_seconds_after_empty   = 30
@@ -203,7 +203,7 @@ variable "karpenter" {
         labels = {
           "kubernetes.io/arch"         = "arm64"
           "node-type"                  = "arm"
-          "karpenter.sh/capacity-type" = "on-demand"  # "spot"
+          "karpenter.sh/capacity-type" = "spot"  # "spot"
           "nodeManager"                = "karpenter"
         }
       }
