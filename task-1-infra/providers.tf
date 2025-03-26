@@ -20,14 +20,6 @@ terraform {
     }
   }
 
-  # Use this for real deployment, I am testing with local state
-  # backend "s3" {
-  #   bucket         = "ACCOUNT-REGION-PROJECT-tfstate"
-  #   encrypt        = true
-  #   region         = "REGION"
-  #   dynamodb_table = "ACCOUNT-REGION-PROJECT"
-  #   key            = "terraform.tfstate"
-  # }
 }
 
 provider "aws" {
