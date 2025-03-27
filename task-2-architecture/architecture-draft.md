@@ -1,4 +1,6 @@
-# Requirements
+# Innovate Inc.'s Cloud infrastructure Architecture
+
+## Requirements
 
 Innovate Inc. is building a web app with a Python/Flask REST API server-side, a React single-page app (SPA) client-side, and a PostgreSQL database. Detailed requirements are in the file [Requirements.md](./Requirements.md)
 
@@ -114,14 +116,15 @@ The high level phases (details depends on the CI/CD provider):
 - Prod: triggered by tagging the images for PROD or by push to Helm chart repository (if using Argo)
 
 As deployment tool I recommend using Helm charts / Kubernetes manifests, or as an alternative ArgoCD. This needs to be discussed with 
-the actual OPS team
+the actual OPS team.
+
 
 ## Additional considerations
 
 I would like to make three additional suggestions:
 
 First - the requirements does not specify how exactly the user identity / login / registration will be handled. One option to consider in AWS
-would be Cognito service allowing registration, login, password reset (including login via social network accounts). In addition to that, it would allow finer-grain security when accessing AWS resources.
+would be Cognito service allowing registration, login, password reset (including login via social network accounts). In addition to that, it would allow finer-grain security when accessing the AWS resources.
 
 Second, it is not clear where is the DNS for application deployed. AWS Route 53 would be a good option if needed. It integrates well with AWS Certificate Manager and other security services.
 
@@ -130,7 +133,8 @@ Third, (it may be an overkill for this case) an AWS API Gateway could be a usefu
 ## Cost Optimization consideration
 
 - use EC2 Savings Plans / Reserved Instances for predictable workloads (on EKS side and definitely on RDS side)
-- use AWS Cost Explorer (CloudCheckr) for cost monitoring.
-- may or may not be able ti leverage AWS Spot Instances, may consider tool like Spot Ocean for rightsizing
-- configure AWS Budgets, AWS CUR, Trusted Advisor and Alerts to track and manage spending
-- make sure the consistend tagging strategy is in place to allow proper cost allocation and visibility
+- use AWS Cost Explorer (or tools like CloudCheckr) for cost monitoring.
+- we may or may not be able to leverage AWS Spot Instances (depends on the application details), We also may want consider tool like Spot Ocean for rightsizing
+- It is recommended to configure AWS Budgets, AWS CUR, Trusted Advisor and Alerts to track and manage spending
+- It is necessary to make sure the consistent tagging strategy is in place to allow proper cost allocation and visibility (something to implement in Terraforming the infra)
+
