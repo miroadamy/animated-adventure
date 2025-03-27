@@ -4,6 +4,9 @@
 
 Innovate Inc. is building a web app with a Python/Flask REST API server-side, a React single-page app (SPA) client-side, and a PostgreSQL database. Detailed requirements are in the file [Requirements.md](./Requirements.md)
 
+## Architecture diagram
+
+![diagram](./architecture-draft.svg)
  
 ## AWS Accounts
 
